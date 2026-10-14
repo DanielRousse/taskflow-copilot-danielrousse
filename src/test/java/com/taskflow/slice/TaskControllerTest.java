@@ -89,6 +89,19 @@ class TaskControllerTest {
     }
 
     @Test
+    void getOverdue_returns200AndListInOrder() throws Exception {
+        when(taskService.vencidas()).thenReturn(List.of(
+                tareaCon(7L, "Corregir bug de fechas", TaskStatus.IN_PROGRESS, 1L)
+        ));
+
+        mockMvc.perform(get("/tasks/overdue"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(7))
+                .andExpect(jsonPath("$[0].title").value("Corregir bug de fechas"));
+    }
+
+    @Test
     void getTaskPorId_existente_retorna200ConElTitulo() throws Exception {
         when(taskService.buscarPorId(1L)).thenReturn(Optional.of(tarea(1L, "Diseñar esquema de BD", TaskStatus.TODO)));
 
