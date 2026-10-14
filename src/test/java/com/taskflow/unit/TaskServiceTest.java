@@ -18,6 +18,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -152,6 +154,77 @@ class TaskServiceTest {
             assertThrows(TaskNotFoundException.class, () -> service.eliminar(999L));
             // never() + anyLong(): NO se borró nada. (Regla "todos matchers o ninguno": aquí anyLong()).
             verify(repository, never()).deleteById(anyLong());
+        }
+    }
+
+    @Nested
+    @DisplayName("vencidas")
+    class Vencidas {
+
+        @Test
+        void vencidas_devuelveSoloVencidasYEnOrden() {
+            LocalDate hace1 = LocalDate.now().minusDays(1);
+            LocalDate dentro3 = LocalDate.now().plusDays(3);
+            LocalDate hace10 = LocalDate.now().minusDays(10);
+            LocalDate hace5 = LocalDate.now().minusDays(5);
+            try {
+                // Construir las 5 tareas en el orden indicado por la instrucción del test
+                Task vencidaHace1 = new Task(11L, "Vencida hace 1 dia", "desc", TaskStatus.IN_PROGRESS, Priority.MED, PROYECTO, 1L, hace1);
+                Task fechaFutura = new Task(12L, "Fecha en 3 dias", "desc", TaskStatus.IN_PROGRESS, Priority.MED, PROYECTO, 1L, dentro3);
+                Task doneVencidaHace10 = new Task(13L, "Hecha hace 10 dias", "desc", TaskStatus.DONE, Priority.MED, PROYECTO, 1L, hace10);
+                Task sinFecha = new Task(14L, "Sin fecha", "desc", TaskStatus.IN_PROGRESS, Priority.MED, PROYECTO, 1L, null);
+                Task vencidaHace5 = new Task(15L, "Vencida hace 5 dias", "desc", TaskStatus.IN_PROGRESS, Priority.MED, PROYECTO, 1L, hace5);
+
+                // El repositorio devuelve en el orden pedido: 1d, +3d, done -10d, null, -5d
+                when(repository.findAll()).thenReturn(List.of(vencidaHace1, fechaFutura, doneVencidaHace10, sinFecha, vencidaHace5));
+
+                List<Task> resultado = service.vencidas();
+
+                // Debe devolver solo las vencidas (hace 1 y hace 5), en orden por fecha ascendente -> primero la de hace 5 días
+                assertEquals(2, resultado.size());
+                assertEquals(15L, resultado.get(0).getId()); // vencida hace 5 dias
+                assertEquals(11L, resultado.get(1).getId()); // vencida hace 1 dia
+            } catch (TaskValidationException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("SinResponsable")
+    class SinResponsable {
+
+        @Test
+        void sinResponsable_devuelveSoloSinAsignarYEnOrden() {
+            LocalDate en10 = LocalDate.now().plusDays(10);
+            LocalDate en2 = LocalDate.now().plusDays(2);
+            try {
+                Task sinResp10 = new Task(41L, "Sin resp 10", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, en10);
+                Task conResp = new Task(42L, "Con resp", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, 5L, en10);
+                Task sinRespSinFecha = new Task(43L, "Sin fecha ni resp", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, null);
+                Task sinResp2 = new Task(44L, "Sin resp 2", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, en2);
+
+                // El repositorio devuelve en el orden pedido: sinResp10, conResp, sinRespSinFecha, sinResp2
+                when(repository.findAll()).thenReturn(List.of(sinResp10, conResp, sinRespSinFecha, sinResp2));
+
+                List<Task> resultado = service.sinResponsable();
+
+                assertEquals(3, resultado.size());
+                assertEquals(44L, resultado.get(0).getId());
+                assertEquals(41L, resultado.get(1).getId());
+                assertEquals(43L, resultado.get(2).getId());
+            } catch (TaskValidationException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Test
+        void sinResponsable_soloConResponsable_devuelveVacio() {
+            Task con1 = tarea(70L, "Con1", 1L);
+            Task con2 = tarea(71L, "Con2", 2L);
+            when(repository.findAll()).thenReturn(List.of(con1, con2));
+            List<Task> res = service.sinResponsable();
+            assertEquals(0, res.size());
         }
     }
 

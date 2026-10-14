@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,6 +87,19 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].title").value("Primera"));
+    }
+
+    @Test
+    void getOverdue_returns200AndListInOrder() throws Exception {
+        when(taskService.vencidas()).thenReturn(List.of(
+                tareaCon(7L, "Corregir bug de fechas", TaskStatus.IN_PROGRESS, 1L)
+        ));
+
+        mockMvc.perform(get("/tasks/overdue"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(7))
+                .andExpect(jsonPath("$[0].title").value("Corregir bug de fechas"));
     }
 
     @Test
@@ -175,6 +189,23 @@ class TaskControllerTest {
         mockMvc.perform(delete("/tasks/999"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404));
+    }
+
+    @Test
+    void getUnassigned_returns200AndContainsIdAndNullAssignee() throws Exception {
+        Task t;
+        try {
+            t = new Task(4L, "Escribir tests MockMvc", "desc", TaskStatus.IN_PROGRESS, Priority.MED, 1L, null, LocalDate.now().plusDays(7));
+        } catch (TaskValidationException e) {
+            throw new IllegalStateException(e);
+        }
+        when(taskService.sinResponsable()).thenReturn(List.of(t));
+
+        mockMvc.perform(get("/tasks/unassigned"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(4))
+                .andExpect(jsonPath("$[0].assigneeId").value(org.hamcrest.Matchers.nullValue()));
     }
 
     // ---- helpers de datos (reales, no mocks) ----
