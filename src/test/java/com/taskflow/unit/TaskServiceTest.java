@@ -190,6 +190,44 @@ class TaskServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("SinResponsable")
+    class SinResponsable {
+
+        @Test
+        void sinResponsable_devuelveSoloSinAsignarYEnOrden() {
+            LocalDate en10 = LocalDate.now().plusDays(10);
+            LocalDate en2 = LocalDate.now().plusDays(2);
+            try {
+                Task sinResp10 = new Task(41L, "Sin resp 10", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, en10);
+                Task conResp = new Task(42L, "Con resp", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, 5L, en10);
+                Task sinRespSinFecha = new Task(43L, "Sin fecha ni resp", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, null);
+                Task sinResp2 = new Task(44L, "Sin resp 2", "desc", TaskStatus.TODO, Priority.MED, PROYECTO, null, en2);
+
+                // El repositorio devuelve en el orden pedido: sinResp10, conResp, sinRespSinFecha, sinResp2
+                when(repository.findAll()).thenReturn(List.of(sinResp10, conResp, sinRespSinFecha, sinResp2));
+
+                List<Task> resultado = service.sinResponsable();
+
+                assertEquals(3, resultado.size());
+                assertEquals(44L, resultado.get(0).getId());
+                assertEquals(41L, resultado.get(1).getId());
+                assertEquals(43L, resultado.get(2).getId());
+            } catch (TaskValidationException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Test
+        void sinResponsable_soloConResponsable_devuelveVacio() {
+            Task con1 = tarea(70L, "Con1", 1L);
+            Task con2 = tarea(71L, "Con2", 2L);
+            when(repository.findAll()).thenReturn(List.of(con1, con2));
+            List<Task> res = service.sinResponsable();
+            assertEquals(0, res.size());
+        }
+    }
+
     /** Fabrica una Task de rehidratación REAL (dato, no mock). assigneeId null = sin responsable. */
     private Task tarea(Long id, String title, Long assigneeId) {
         try {

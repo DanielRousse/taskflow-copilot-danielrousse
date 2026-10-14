@@ -84,6 +84,14 @@ public class TaskController {
         return vencidas.stream().map(TaskMapper::aResponse).toList();
     }
 
+    @Operation(summary = "Lista tareas sin responsable",
+            description = "Lista las tareas sin responsable de todos los proyectos, ordenadas por dueDate asc.")
+    @GetMapping("/tasks/unassigned")
+    public List<TaskResponse> getUnassignedTasks() {
+        List<Task> sin = taskService.sinResponsable();
+        return sin.stream().map(TaskMapper::aResponse).toList();
+    }
+
     /** GET /tasks/{id} — 200 con TaskResponse, o 404 uniforme (orElseThrow -> advice). */
     @Operation(summary = "Obtiene una tarea por id",
             description = "200 con el TaskResponse; 404 uniforme si el id no existe.")
