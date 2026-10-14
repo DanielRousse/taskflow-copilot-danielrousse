@@ -1,0 +1,28 @@
+ specs/overdue.md                                   | 42 ++++++++++++++++++++++
+ .../com/taskflow/controller/TaskController.java    | 12 +++++++
+ .../java/com/taskflow/service/TaskService.java     | 12 +++++++
+ .../com/taskflow/slice/TaskControllerTest.java     | 13 +++++++
+ .../java/com/taskflow/unit/TaskServiceTest.java    | 30 ++++++++++++++++
+ 5 files changed, 109 insertions(+)
+13	0	src/test/java/com/taskflow/slice/TaskControllerTest.java
+30	0	src/test/java/com/taskflow/unit/TaskServiceTest.java
+
++    /**
++     * GET /tasks/overdue ÔÇö lista las tareas vencidas de todos los proyectos.
++     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
++     */
++    /**
++     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
++     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
++     */
++                // vencida: dueDate ayer, IN_PROGRESS
++                // done con fecha pasada: no debe aparecer
++                // sin fecha: no aparece
+
+
++     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
++     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
++     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
++                .filter(Task::estaVencida)
++                .sorted(TaskOrders.POR_FECHA)
+
