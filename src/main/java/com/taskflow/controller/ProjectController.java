@@ -10,6 +10,7 @@ import com.taskflow.model.Project;
 import com.taskflow.model.Task;
 import com.taskflow.model.TaskStatus;
 import com.taskflow.service.ProjectService;
+import com.taskflow.dto.ProjectSummaryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -84,6 +85,19 @@ public class ProjectController {
             tareas = tareas.stream().filter(t -> t.getStatus() == status).toList();
         }
         return tareas.stream().map(TaskMapper::aResponse).toList();
+    }
+
+    /**
+     * GET /projects/{id}/summary — resumen del proyecto: totales por estado y vencidas.
+     * 404 si el proyecto no existe (ProjectNotFoundException via advice).
+     */
+    @Operation(summary = "Resumen del proyecto",
+            description = "Devuelve totales por estado y cuántas tareas están vencidas. 404 si el proyecto no existe.")
+    @GetMapping("/projects/{id}/summary")
+    public ProjectSummaryResponse getProjectSummary(@PathVariable("id") Long id) {
+        Project proyecto = projectService.buscarPorId(id)
+                .orElseThrow(() -> new com.taskflow.exception.ProjectNotFoundException(id));
+        return projectService.resumen(proyecto);
     }
 
     /**
