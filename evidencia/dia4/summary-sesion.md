@@ -1,4 +1,4 @@
-# Copilot CLI Session
+﻿# Copilot CLI Session
 
 > [!NOTE]
 > - **Session ID:** `970cce5d-226e-4483-a169-c1f9c91cb864`  
@@ -12,7 +12,7 @@
 
 ### User
 
-/crear-endpoint-taskflow Implementa la especificación de specs/summary.md.
+/crear-endpoint-taskflow Implementa la especificaciÃ³n de specs/summary.md.
 
 ---
 
@@ -20,7 +20,7 @@
 
 ### Copilot
 
-Ejecutando la skill "crear-endpoint-taskflow" para implementar la especificación en specs/summary.md: creará DTO record, mapper manual, método en el service, controller sin prefijo /api, tests unitarios (Mockito) y slice (@WebMvcTest), y finalizará ejecutando mvn -q test para verificar la suite. Ahora lanzo la skill.
+Ejecutando la skill "crear-endpoint-taskflow" para implementar la especificaciÃ³n en specs/summary.md: crearÃ¡ DTO record, mapper manual, mÃ©todo en el service, controller sin prefijo /api, tests unitarios (Mockito) y slice (@WebMvcTest), y finalizarÃ¡ ejecutando mvn -q test para verificar la suite. Ahora lanzo la skill.
 
 ---
 
@@ -52,7 +52,7 @@ Skill "crear-endpoint-taskflow" loaded successfully. Follow the instructions in 
 
 ### Copilot
 
-Leyendo la especificación (specs/summary.md) y las plantillas de código para implementar el endpoint acorde a las convenciones del proyecto. Ejecutando lectura de ambos archivos.
+Leyendo la especificaciÃ³n (specs/summary.md) y las plantillas de cÃ³digo para implementar el endpoint acorde a las convenciones del proyecto. Ejecutando lectura de ambos archivos.
 
 ---
 
@@ -68,71 +68,71 @@ C:\Users\Lenovo\taskflow-copilot-danielrousse\specs\summary.md
 <summary>52 lines</summary>
 
 ````
-## Qué se pide
+## QuÃ© se pide
 
-Un endpoint nuevo, `GET /projects/{id}/summary`, que resume un proyecto: **cuántas tareas tiene en
-cada estado y cuántas están vencidas**. Sirve para pintar un tablero sin descargar todas las tareas del
-proyecto. Pide el token de `POST /auth/login`, como todo lo que no es público.
+Un endpoint nuevo, `GET /projects/{id}/summary`, que resume un proyecto: **cuÃ¡ntas tareas tiene en
+cada estado y cuÃ¡ntas estÃ¡n vencidas**. Sirve para pintar un tablero sin descargar todas las tareas del
+proyecto. Pide el token de `POST /auth/login`, como todo lo que no es pÃºblico.
 
 ## Respuesta 200
 
 ```json
 {
   "projectId": 2,
-  "projectName": "App Móvil",
+  "projectName": "App MÃ³vil",
   "totalTasks": 4,
   "byStatus": { "TODO": 1, "IN_PROGRESS": 2, "DONE": 1 },
   "overdue": 1
 }
 ```
 
-| Campo | Tipo | Qué es |
+| Campo | Tipo | QuÃ© es |
 |---|---|---|
-| `projectId` | número | el `id` del proyecto pedido |
+| `projectId` | nÃºmero | el `id` del proyecto pedido |
 | `projectName` | texto | el `name` del proyecto |
-| `totalTasks` | número | cuántas tareas tiene el proyecto |
+| `totalTasks` | nÃºmero | cuÃ¡ntas tareas tiene el proyecto |
 | `byStatus` | objeto | una clave por cada valor de `TaskStatus` (`TODO`, `IN_PROGRESS`, `DONE`), **siempre las tres**, aunque valgan 0 |
-| `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+| `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 
 ## Reglas
 
-1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
-   el estado no es `DONE`. Se reutiliza ese método; no se reescribe la regla en el servicio.
+1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
+   el estado no es `DONE`. Se reutiliza ese mÃ©todo; no se reescribe la regla en el servicio.
 2. Un proyecto **sin tareas** responde 200 con `totalTasks` 0, las tres claves de `byStatus` en 0 y `overdue` 0.
 3. Un proyecto **que no existe** responde **404** con el `ErrorResponse` uniforme de siempre
    (`ProjectNotFoundException`, igual que `GET /projects/{id}`).
-4. **Sin token** responde **401**, como todo lo que no es público.
+4. **Sin token** responde **401**, como todo lo que no es pÃºblico.
 5. Cualquier usuario autenticado puede pedir el resumen de cualquier proyecto (igual que `GET /projects/{id}/tasks`).
 
 ## Resultado esperado con la semilla del perfil `h2`
 
-| Petición | `totalTasks` | `byStatus` | `overdue` |
+| PeticiÃ³n | `totalTasks` | `byStatus` | `overdue` |
 |---|---|---|---|
-| `GET /projects/1/summary` | 5 | `TODO` 3 · `IN_PROGRESS` 1 · `DONE` 1 | 0 (la tarea 2 tiene fecha pasada, pero está `DONE`) |
-| `GET /projects/2/summary` | 4 | `TODO` 1 · `IN_PROGRESS` 2 · `DONE` 1 | 1 (la tarea 7) |
-| `GET /projects/3/summary` | 0 | `TODO` 0 · `IN_PROGRESS` 0 · `DONE` 0 | 0 |
-| `GET /projects/99/summary` | — | — | 404 |
+| `GET /projects/1/summary` | 5 | `TODO` 3 Â· `IN_PROGRESS` 1 Â· `DONE` 1 | 0 (la tarea 2 tiene fecha pasada, pero estÃ¡ `DONE`) |
+| `GET /projects/2/summary` | 4 | `TODO` 1 Â· `IN_PROGRESS` 2 Â· `DONE` 1 | 1 (la tarea 7) |
+| `GET /projects/3/summary` | 0 | `TODO` 0 Â· `IN_PROGRESS` 0 Â· `DONE` 0 | 0 |
+| `GET /projects/99/summary` | â€” | â€” | 404 |
 
 Si antes de probar creaste tareas en un proyecto (por la UI o con el servidor MCP), `totalTasks` y
 `TODO` de ese proyecto suben en la misma cantidad. Al reiniciar la app con el perfil `h2` vuelven a
 ser los de la tabla.
 
-## Cómo se construye (convenciones de TaskFlow)
+## CÃ³mo se construye (convenciones de TaskFlow)
 
 - DTO de salida: un `record` en `com.taskflow.dto`, `ProjectSummaryResponse`.
-- La lógica de conteo va en el servicio (`ProjectService`), no en el controller.
+- La lÃ³gica de conteo va en el servicio (`ProjectService`), no en el controller.
 - El controller solo traduce HTTP: busca el proyecto (404 si no existe) y delega.
 - Tests:
   - **unit** del servicio con Mockito: un proyecto con tareas en los tres estados y una vencida; un proyecto sin tareas.
   - **slice** `@WebMvcTest` del controller: 200 con el JSON de arriba y 404 con un proyecto inexistente.
 - `mvn -q test` en verde al terminar, sin modificar tests existentes.
 
-## Criterios de aceptación
+## Criterios de aceptaciÃ³n
 
 - [ ] `GET /projects/2/summary` con el token de `ana` devuelve el JSON del ejemplo.
-- [ ] `GET /projects/3/summary` devuelve ceros en los cinco números.
+- [ ] `GET /projects/3/summary` devuelve ceros en los cinco nÃºmeros.
 - [ ] `GET /projects/99/summary` devuelve 404.
-- [ ] `mvn -q test` en verde: los tests de antes más los nuevos.
+- [ ] `mvn -q test` en verde: los tests de antes mÃ¡s los nuevos.
 ````
 
 </details>
@@ -144,7 +144,7 @@ ser los de la tabla.
 
 ### Copilot
 
-Buscando las clases relevantes: ProjectController, ProjectService, Task, mappers y paquetes dto para añadir DTO, mapper, método de servicio y tests. Ejecutando búsqueda profunda.
+Buscando las clases relevantes: ProjectController, ProjectService, Task, mappers y paquetes dto para aÃ±adir DTO, mapper, mÃ©todo de servicio y tests. Ejecutando bÃºsqueda profunda.
 
 ---
 
@@ -304,13 +304,13 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
 76 matches (more results are available)
 ```txt
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/plantillas.md" line=43>
-    ## 3. Service — método nuevo en `src/main/java/com/taskflow/service/ProjectService.java`
+    ## 3. Service â€” mÃ©todo nuevo en `src/main/java/com/taskflow/service/ProjectService.java`
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/plantillas.md" line=45>
     `ProjectService` ya tiene `taskRepository`: no hace falta inyectar nada nuevo. Recibe el proyecto ya
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/plantillas.md" line=62>
-    ## 4. Controller — método nuevo en `src/main/java/com/taskflow/controller/ProjectController.java`
+    ## 4. Controller â€” mÃ©todo nuevo en `src/main/java/com/taskflow/controller/ProjectController.java`
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/plantillas.md" line=70>
     Project proyecto = projectService.buscarPorId(id)
@@ -355,10 +355,10 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
     - el controller donde va a vivir la ruta: `ProjectController` para `/projects/...`, `TaskController`
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=33>
-    | 3 | Service | el service que el controller **ya inyecta** (`ProjectService` para `/projects`, `TaskService` para `/tasks`) | la lógica (contar, filtrar, ordenar), sin nada de HTTP. Recibe la entidad ya encontrada (`Project`) y usa los repositorios que ya tiene |
+    | 3 | Service | el service que el controller **ya inyecta** (`ProjectService` para `/projects`, `TaskService` para `/tasks`) | la lÃ³gica (contar, filtrar, ordenar), sin nada de HTTP. Recibe la entidad ya encontrada (`Project`) y usa los repositorios que ya tiene |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=34>
-    | 4 | Controller | el controller del recurso | ruta **sin** `/api` (`/projects/{id}/...`), `@PathVariable("id")` con el nombre escrito, `@Operation(summary, description)` en español, `@Valid` en cada `@RequestBody`, devuelve el DTO (nunca la entidad). El 404 se resuelve **como en la ruta vecina** `GET /projects/{id}/tasks`: `projectService.buscarPorId(id).orElseThrow(() -> new ProjectNotFoundException(id))`; el `GlobalExceptionHandler` lo convierte en 404 |
+    | 4 | Controller | el controller del recurso | ruta **sin** `/api` (`/projects/{id}/...`), `@PathVariable("id")` con el nombre escrito, `@Operation(summary, description)` en espaÃ±ol, `@Valid` en cada `@RequestBody`, devuelve el DTO (nunca la entidad). El 404 se resuelve **como en la ruta vecina** `GET /projects/{id}/tasks`: `projectService.buscarPorId(id).orElseThrow(() -> new ProjectNotFoundException(id))`; el `GlobalExceptionHandler` lo convierte en 404 |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=39>
     nuevo, un repositorio). El slice test que ya existe para ese controller (`ProjectControllerTest`,
@@ -392,25 +392,25 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
 19 matches
 ```txt
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=11>
-    están en el código (mezcla de inglés y español: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
+    estÃ¡n en el cÃ³digo (mezcla de inglÃ©s y espaÃ±ol: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=36>
-    `Task.estaVencida()` = tiene fecha, ya pasó y no está `DONE`. **Reutiliza esas reglas, no las copies.**
+    `Task.estaVencida()` = tiene fecha, ya pasÃ³ y no estÃ¡ `DONE`. **Reutiliza esas reglas, no las copies.**
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=23>
-    - `Task.estaVencida()`: tiene fecha, la fecha ya pasó y no está `DONE`;
+    - `Task.estaVencida()`: tiene fecha, la fecha ya pasÃ³ y no estÃ¡ `DONE`;
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=12>
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=15>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=16>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -419,7 +419,7 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=24>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=25>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -428,16 +428,16 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
     * Cada test es un caso de la regla de Task.estaVencida() de taskflow-api.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/overdue.md" line=10>
-    1. Una tarea está vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
+    1. Una tarea estÃ¡ vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/src/main/java/com/taskflow/service/TaskService.java" line=127>
-    * Lista las tareas vencidas según la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    * Lista las tareas vencidas segÃºn la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/src/main/java/com/taskflow/service/TaskService.java" line=128>
     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -446,7 +446,7 @@ No files found matching pattern: **/ProjectSummaryResponse*.java
     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/taskflow-mcp/src/main/java/com/taskflow/mcp/Vencidas.java" line=9>
-    * Es la MISMA regla que Task.estaVencida() de taskflow-api: tiene fecha límite, la fecha es anterior
+    * Es la MISMA regla que Task.estaVencida() de taskflow-api: tiene fecha lÃ­mite, la fecha es anterior
 </match>
 ```
 ````
@@ -537,10 +537,10 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * ProjectController — la puerta HTTP de los proyectos: CRUD completo, en DTOs
+ * ProjectController â€” la puerta HTTP de los proyectos: CRUD completo, en DTOs
  * (ProjectRequest / ProjectResponse); las tareas de un proyecto salen como TaskResponse.
  *
- * Repetición deliberada del patrón de TaskController: mismos gestos (201 + Location, @Valid, 404 vía
+ * RepeticiÃ³n deliberada del patrÃ³n de TaskController: mismos gestos (201 + Location, @Valid, 404 vÃ­a
  * orElseThrow -> advice). Con el lado Project queda completa la tabla de endpoints de la API (menos /auth/*).
  */
 @RestController
@@ -553,9 +553,9 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    /** GET /projects — todos los proyectos como ProjectResponse. */
+    /** GET /projects â€” todos los proyectos como ProjectResponse. */
     @Operation(summary = "Lista todos los proyectos",
-            description = "Devuelve todos los proyectos como ProjectResponse (lista vacía si no hay ninguno).")
+            description = "Devuelve todos los proyectos como ProjectResponse (lista vacÃ­a si no hay ninguno).")
     @GetMapping("/projects")
     public List<ProjectResponse> getProjects() {
         return projectService.listar().stream()
@@ -563,7 +563,7 @@ public class ProjectController {
                 .toList();
     }
 
-    /** GET /projects/{id} — 200 con ProjectResponse; 404 uniforme si no existe. */
+    /** GET /projects/{id} â€” 200 con ProjectResponse; 404 uniforme si no existe. */
     @Operation(summary = "Obtiene un proyecto por id",
             description = "200 con el ProjectResponse; 404 uniforme si el id no existe.")
     @GetMapping("/projects/{id}")
@@ -574,7 +574,7 @@ public class ProjectController {
     }
 
     /**
-     * GET /projects/{id}/tasks — las tareas de un proyecto como TaskResponse. Distinción clave:
+     * GET /projects/{id}/tasks â€” las tareas de un proyecto como TaskResponse. DistinciÃ³n clave:
      * proyecto inexistente -> 404 (orElseThrow); proyecto sin tareas -> 200 con []. El filtro
      * ?status= es opcional (mismo enum que /tasks). Delega en ProjectService.tareasDe.
      */
@@ -594,9 +594,9 @@ public class ProjectController {
     }
 
     /**
-     * POST /projects — 201 + Location a /projects/{id}. @Valid dispara Bean Validation (400 si falla).
-     * El owner sale del JWT — el Authentication (inyectado por Spring Security) trae el username
-     * del token; el service lo resuelve a ownerId. El dueño es QUIEN crea, no una constante.
+     * POST /projects â€” 201 + Location a /projects/{id}. @Valid dispara Bean Validation (400 si falla).
+     * El owner sale del JWT â€” el Authentication (inyectado por Spring Security) trae el username
+     * del token; el service lo resuelve a ownerId. El dueÃ±o es QUIEN crea, no una constante.
      */
     @Operation(summary = "Crea un proyecto",
             description = "El owner se toma del usuario autenticado (el username del JWT).")
@@ -611,7 +611,7 @@ public class ProjectController {
         return ResponseEntity.created(location).body(ProjectMapper.aResponse(creado));
     }
 
-    /** PUT /projects/{id} — reemplazo COMPLETO. 200 con ProjectResponse; 404 si no existe. */
+    /** PUT /projects/{id} â€” reemplazo COMPLETO. 200 con ProjectResponse; 404 si no existe. */
     @Operation(summary = "Reemplaza un proyecto",
             description = "Conserva id, owner y createdAt; name y description vienen del cuerpo.")
     @PutMapping("/projects/{id}")
@@ -622,13 +622,13 @@ public class ProjectController {
     }
 
     /**
-     * DELETE /projects/{id} — 204 No Content; 404 si no existe. Borra en cascada las tareas del
+     * DELETE /projects/{id} â€” 204 No Content; 404 si no existe. Borra en cascada las tareas del
      * proyecto (regla "no Task sin Project").
      *
-     * La regla de negocio, aplicada: @PreAuthorize se evalúa ANTES del método: pasa si el
+     * La regla de negocio, aplicada: @PreAuthorize se evalÃºa ANTES del mÃ©todo: pasa si el
      * usuario es ADMIN o es el owner del proyecto (bean @projectSecurity, data-driven). Un USER que no
-     * es owner -> 403 (la API SÍ sabe quién es, por eso 403 y no 401). Proyecto inexistente ->
-     * esOwner devuelve true a propósito para que hable el 404 del servicio.
+     * es owner -> 403 (la API SÃ sabe quiÃ©n es, por eso 403 y no 401). Proyecto inexistente ->
+     * esOwner devuelve true a propÃ³sito para que hable el 404 del servicio.
      */
     @Operation(summary = "Borra un proyecto y sus tareas",
             description = "Solo ADMIN o el owner. Un USER no-owner recibe 403.")
@@ -685,11 +685,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ProjectService — la capa de negocio del lado Project. Cero HTTP aquí (el "no existe" se traduce con
+ * ProjectService â€” la capa de negocio del lado Project. Cero HTTP aquÃ­ (el "no existe" se traduce con
  * orElseThrow -> ProjectNotFoundException; el advice le pone el 404).
  *
- * Dos decisiones que se ven aquí:
- *   - Project guarda un ownerId (Long), no un objeto User, así que 'crear' y 'reemplazar' manejan
+ * Dos decisiones que se ven aquÃ­:
+ *   - Project guarda un ownerId (Long), no un objeto User, asÃ­ que 'crear' y 'reemplazar' manejan
  *     ese Long. 'crear' construye con id null y la BD asigna el id (IDENTITY).
  *   - 'tareasDe' usa la derived query taskRepository.findByProjectId(id) en vez de filtrar findAll()
  *     con un stream: el filtro lo hace la BD.
@@ -722,7 +722,7 @@ public class ProjectService {
      * Las tareas de un proyecto, con la derived query taskRepository.findByProjectId(projectId):
      * el WHERE project_id = ? lo hace
      * la BD (viajan solo las filas del proyecto). "no existe el proyecto" (404) lo decide el
-     * controller con buscarPorId; ESTE método, si el proyecto existe pero no tiene tareas, devuelve
+     * controller con buscarPorId; ESTE mÃ©todo, si el proyecto existe pero no tiene tareas, devuelve
      * [] (-> 200 con []). No son lo mismo.
      */
     public List<Task> tareasDe(Long projectId) {
@@ -731,8 +731,8 @@ public class ProjectService {
 
     /**
      * Crea un proyecto (POST): el request trae name y description; el ownerId NO es una constante
-     * — se resuelve del USERNAME AUTENTICADO (el que puso el JWT en el
-     * Authentication). El dueño no lo decide el cliente ni una semilla: es QUIEN llama. createdAt = hoy;
+     * â€” se resuelve del USERNAME AUTENTICADO (el que puso el JWT en el
+     * Authentication). El dueÃ±o no lo decide el cliente ni una semilla: es QUIEN llama. createdAt = hoy;
      * id == null -> la BD lo asigna (IDENTITY).
      */
     public Project crear(ProjectRequest request, String ownerUsername) {
@@ -758,9 +758,9 @@ public class ProjectService {
 
     /**
      * Elimina un proyecto (DELETE) con CASCADA MANUAL: borra primero sus tareas (regla "no Task sin
-     * Project" — y además la FK task.project_id lo EXIGE: borrar el proyecto con tareas colgando daría
-     * una violación de integridad) y luego el proyecto. No existe -> 404. La regla owner/ADMIN no
-     * vive aquí: la aplica el @PreAuthorize del controller antes de llegar a este método.
+     * Project" â€” y ademÃ¡s la FK task.project_id lo EXIGE: borrar el proyecto con tareas colgando darÃ­a
+     * una violaciÃ³n de integridad) y luego el proyecto. No existe -> 404. La regla owner/ADMIN no
+     * vive aquÃ­: la aplica el @PreAuthorize del controller antes de llegar a este mÃ©todo.
      */
     public void eliminar(Long id) {
         projectRepository.findById(id)
@@ -823,11 +823,11 @@ import com.taskflow.dto.ProjectResponse;
 import com.taskflow.model.Project;
 
 /**
- * ProjectMapper — puente DTO &lt;-&gt; dominio del lado Project. Estático, a mano, sin MapStruct.
+ * ProjectMapper â€” puente DTO &lt;-&gt; dominio del lado Project. EstÃ¡tico, a mano, sin MapStruct.
  *
- * Mapeo trivial: la entidad guarda 'ownerId' directo (no un objeto User), así que aResponse no
- * deriva el id desde un objeto — lee p.getOwnerId() tal cual. Cuando el
- * dominio coincide con el contrato de salida (ProjectResponse con ownerId Long), el mapeo es una línea.
+ * Mapeo trivial: la entidad guarda 'ownerId' directo (no un objeto User), asÃ­ que aResponse no
+ * deriva el id desde un objeto â€” lee p.getOwnerId() tal cual. Cuando el
+ * dominio coincide con el contrato de salida (ProjectResponse con ownerId Long), el mapeo es una lÃ­nea.
  */
 public final class ProjectMapper {
 
@@ -940,37 +940,37 @@ public final class ProjectMapper {
 38 matches (more results are available)
 ```txt
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=11>
-    están en el código (mezcla de inglés y español: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
+    estÃ¡n en el cÃ³digo (mezcla de inglÃ©s y espaÃ±ol: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=36>
-    `Task.estaVencida()` = tiene fecha, ya pasó y no está `DONE`. **Reutiliza esas reglas, no las copies.**
+    `Task.estaVencida()` = tiene fecha, ya pasÃ³ y no estÃ¡ `DONE`. **Reutiliza esas reglas, no las copies.**
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/README.md" line=59>
-    | `dueDate` no puede ser pasada **al crear** | Factory `Task.crear` — el constructor sí rehidrata tareas vencidas, o `estaVencida()` no tendría sentido | `400` |
+    | `dueDate` no puede ser pasada **al crear** | Factory `Task.crear` â€” el constructor sÃ­ rehidrata tareas vencidas, o `estaVencida()` no tendrÃ­a sentido | `400` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=23>
-    - `Task.estaVencida()`: tiene fecha, la fecha ya pasó y no está `DONE`;
+    - `Task.estaVencida()`: tiene fecha, la fecha ya pasÃ³ y no estÃ¡ `DONE`;
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/overdue.md" line=10>
-    1. Una tarea está vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
+    1. Una tarea estÃ¡ vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=12>
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=15>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=16>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -979,7 +979,7 @@ public final class ProjectMapper {
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=24>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=25>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -1053,10 +1053,10 @@ package com.taskflow.dto;
 import java.time.LocalDate;
 
 /**
- * ProjectResponse — el contrato de salida de un proyecto.
+ * ProjectResponse â€” el contrato de salida de un proyecto.
  *
- * 'ownerId' es un Long, no un User anidado: el JSON referencia al dueño por su id. La entidad
- * Project guarda ese mismo ownerId, así que ProjectMapper lo copia tal cual.
+ * 'ownerId' es un Long, no un User anidado: el JSON referencia al dueÃ±o por su id. La entidad
+ * Project guarda ese mismo ownerId, asÃ­ que ProjectMapper lo copia tal cual.
  */
 public record ProjectResponse(
         Long id,
@@ -1191,25 +1191,25 @@ No files found matching pattern: **/*SummaryResponse*.java
     Informar 'GET /tasks/overdue devuelve solo la tarea 7' "HTTP $($r.Codigo) ids=$((@($r.Cuerpo) | ForEach-Object { $_.id }) -join ',')" "HTTP 200 ids=$($esperado.overdue)"
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/verificar-taskflow/SKILL.md" line=3>
-    description: Verifica TaskFlow API de punta a punta con la app arrancada de verdad - empaqueta, arranca con el perfil h2 en segundo plano, hace login y comprueba GET /tasks/overdue, GET /tasks/unassigned y GET /projects/{id}/summary contra los datos de la semilla, y apaga la app al final. Úsala cuando pidan verificar, probar contra la app corriendo, hacer un smoke test o comprobar que los endpoints responden lo esperado antes de un PR.
+    description: Verifica TaskFlow API de punta a punta con la app arrancada de verdad - empaqueta, arranca con el perfil h2 en segundo plano, hace login y comprueba GET /tasks/overdue, GET /tasks/unassigned y GET /projects/{id}/summary contra los datos de la semilla, y apaga la app al final. Ãšsala cuando pidan verificar, probar contra la app corriendo, hacer un smoke test o comprobar que los endpoints responden lo esperado antes de un PR.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=1>
     specs/overdue.md                                   | 42 ++++++++++++++++++++++
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=11>
-    +     * GET /tasks/overdue ÔÇö lista las tareas vencidas de todos los proyectos.
+    +     * GET /tasks/overdue Ã”Ã‡Ã¶ lista las tareas vencidas de todos los proyectos.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=15>
     "overdue": 1
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=31>
     2. Un proyecto **sin tareas** responde 200 con `totalTasks` 0, las tres claves de `byStatus` en 0 y `overdue` 0.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=39>
-    | Petición | `totalTasks` | `byStatus` | `overdue` |
+    | PeticiÃ³n | `totalTasks` | `byStatus` | `overdue` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/comprobacion.txt" line=1>
     overdue: 7
@@ -1227,7 +1227,7 @@ No files found matching pattern: **/*SummaryResponse*.java
     "overdue": 1
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 ```
 ````
@@ -1280,28 +1280,28 @@ No files found matching pattern: **/*SummaryResponse*.java
 19 matches
 ```txt
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=11>
-    están en el código (mezcla de inglés y español: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
+    estÃ¡n en el cÃ³digo (mezcla de inglÃ©s y espaÃ±ol: `TaskService.cambiarStatus()`, `Task.estaVencida()`).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/copilot-instructions.md" line=36>
-    `Task.estaVencida()` = tiene fecha, ya pasó y no está `DONE`. **Reutiliza esas reglas, no las copies.**
+    `Task.estaVencida()` = tiene fecha, ya pasÃ³ y no estÃ¡ `DONE`. **Reutiliza esas reglas, no las copies.**
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/.github/skills/crear-endpoint-taskflow/SKILL.md" line=23>
-    - `Task.estaVencida()`: tiene fecha, la fecha ya pasó y no está `DONE`;
+    - `Task.estaVencida()`: tiene fecha, la fecha ya pasÃ³ y no estÃ¡ `DONE`;
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/overdue.md" line=10>
-    1. Una tarea está vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
+    1. Una tarea estÃ¡ vencida si `Task.estaVencida()` devuelve `true` (ya existe: tiene `dueDate`, la
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/specs/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=12>
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=15>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=16>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -1310,28 +1310,28 @@ No files found matching pattern: **/*SummaryResponse*.java
     +     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=24>
-    +     * Lista las tareas vencidas seg├║n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    +     * Lista las tareas vencidas segâ”œâ•‘n la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/evidencia/dia2/checklist-overdue.txt" line=25>
     +     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=25>
-    | `overdue` | número | cuántas tareas del proyecto cumplen `Task.estaVencida()` |
+    | `overdue` | nÃºmero | cuÃ¡ntas tareas del proyecto cumplen `Task.estaVencida()` |
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/issues/summary.md" line=29>
-    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha límite, la fecha ya pasó y
+    1. **Vencida** es exactamente lo que ya dice `Task.estaVencida()`: tiene fecha lÃ­mite, la fecha ya pasÃ³ y
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/taskflow-mcp/src/test/java/com/taskflow/mcp/VencidasTest.java" line=12>
     * Cada test es un caso de la regla de Task.estaVencida() de taskflow-api.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/taskflow-mcp/src/main/java/com/taskflow/mcp/Vencidas.java" line=9>
-    * Es la MISMA regla que Task.estaVencida() de taskflow-api: tiene fecha límite, la fecha es anterior
+    * Es la MISMA regla que Task.estaVencida() de taskflow-api: tiene fecha lÃ­mite, la fecha es anterior
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/src/main/java/com/taskflow/controller/TaskController.java" line=77>
     * Reglas: usa Task.estaVencida() y orden TaskOrders.POR_FECHA. Responde 200 con lista (posible []).
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/src/main/java/com/taskflow/service/TaskService.java" line=127>
-    * Lista las tareas vencidas según la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
+    * Lista las tareas vencidas segÃºn la regla de dominio Task.estaVencida(), ordenadas por fecha asc.
 </match>
 <match path="C:/Users/Lenovo/taskflow-copilot-danielrousse/src/main/java/com/taskflow/service/TaskService.java" line=128>
     * Reglas de la spec: usar Task.estaVencida() y TaskOrders.POR_FECHA.
@@ -1422,34 +1422,34 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * Task — entidad central del dominio TaskFlow (persistida con JPA).
+ * Task â€” entidad central del dominio TaskFlow (persistida con JPA).
  *
  * Es una clase de dominio normal (8 campos, validaciones, comportamiento): NO hay un "modelo de
- * BD" aparte. Lo que la hace entidad, todo por anotación:
+ * BD" aparte. Lo que la hace entidad, todo por anotaciÃ³n:
  *   - @Entity + @Table(name = "tasks"): esta clase mapea a la tabla TASKS.
  *   - @Id + @GeneratedValue(IDENTITY): el id lo asigna la BD (columna autoincremental). Nada de
- *     secuencia manual en Java: el id lo pone la BD y nadie más.
+ *     secuencia manual en Java: el id lo pone la BD y nadie mÃ¡s.
  *   - @Enumerated(STRING) en status y priority: se guardan como TEXTO ('TODO'), NUNCA como ORDINAL
- *     (0,1,2): reordenar o insertar un enum corrompería datos históricos. El orden LOW,MED,HIGH
+ *     (0,1,2): reordenar o insertar un enum corromperÃ­a datos histÃ³ricos. El orden LOW,MED,HIGH
  *     es contrato del SORT (compareTo), no del almacenamiento.
- *   - relación @ManyToOne Task->Project (patrón "asociación de solo lectura"): la COLUMNA la
+ *   - relaciÃ³n @ManyToOne Task->Project (patrÃ³n "asociaciÃ³n de solo lectura"): la COLUMNA la
  *     manda el escalar 'projectId' (por eso Task.crear, TaskService, mappers y DTOs hablan de projectId);
  *     el objeto 'project' solo NAVEGA. Frase ancla: "la columna manda; el objeto navega".
  *
- * Tensión JPA vs validaciones: JPA rehidrata
- * por reflexión con un constructor sin args protegido, SIN pasar por las validaciones. Está bien:
- * Task.crear(...) sigue siendo el ÚNICO camino de CREACIÓN de negocio; JPA solo REHIDRATA datos que
- * ya existían (la distinción crear/rehidratar).
+ * TensiÃ³n JPA vs validaciones: JPA rehidrata
+ * por reflexiÃ³n con un constructor sin args protegido, SIN pasar por las validaciones. EstÃ¡ bien:
+ * Task.crear(...) sigue siendo el ÃšNICO camino de CREACIÃ“N de negocio; JPA solo REHIDRATA datos que
+ * ya existÃ­an (la distinciÃ³n crear/rehidratar).
  *
- * OJO: las columnas persistentes NO pueden ser 'final' (JPA las escribe por reflexión tras el no-arg);
+ * OJO: las columnas persistentes NO pueden ser 'final' (JPA las escribe por reflexiÃ³n tras el no-arg);
  * por eso title/description/projectId/dueDate no son 'final'. La inmutabilidad
- * de negocio la sigue garantizando la ausencia de setters públicos para esos campos.
+ * de negocio la sigue garantizando la ausencia de setters pÃºblicos para esos campos.
  */
 @Entity
 @Table(name = "tasks")
 public class Task implements Comparable<Task> {
 
-    // Reglas de longitud del título (regla de negocio).
+    // Reglas de longitud del tÃ­tulo (regla de negocio).
     private static final int TITULO_MIN = 3;
     private static final int TITULO_MAX = 120;
 
@@ -1461,7 +1461,7 @@ public class Task implements Comparable<Task> {
     @Column(nullable = false, length = 120)
     private String title;
 
-    private String description;                 // por convención -> columna DESCRIPTION
+    private String description;                 // por convenciÃ³n -> columna DESCRIPTION
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -1472,23 +1472,23 @@ public class Task implements Comparable<Task> {
     private Priority priority;                  // texto 'LOW'/'MED'/'HIGH'
 
     // La COLUMNA project_id la posee este escalar (insertable/updatable por default). Sigue siendo
-    // el dueño: Task.crear, el mapper y el servicio hablan con projectId, no con el objeto.
+    // el dueÃ±o: Task.crear, el mapper y el servicio hablan con projectId, no con el objeto.
     @Column(name = "project_id", nullable = false)
     private Long projectId;
 
-    // assigneeId se queda Long a secas (juicio explícito): es nullable, NUNCA navegamos al User
+    // assigneeId se queda Long a secas (juicio explÃ­cito): es nullable, NUNCA navegamos al User
     // completo al leer tareas, y las derived queries operan igual. No toda FK necesita ser objeto:
     // mapea objeto cuando NAVEGAS, deja el id cuando solo REFERENCIAS.
     @Column(name = "assignee_id")
     private Long assigneeId;
 
-    private LocalDate dueDate;                  // por convención -> columna DUE_DATE (camelCase->snake_case)
+    private LocalDate dueDate;                  // por convenciÃ³n -> columna DUE_DATE (camelCase->snake_case)
 
     /**
-     * Asociación de SOLO LECTURA hacia el proyecto. Comparte la MISMA columna project_id con
+     * AsociaciÃ³n de SOLO LECTURA hacia el proyecto. Comparte la MISMA columna project_id con
      * el escalar de arriba, pero marcada insertable=false/updatable=false: no escribe la columna (el
      * escalar lo hace), solo permite NAVEGAR (task.getProject().getName()). LAZY: no se carga hasta
-     * que se toca — y fuera de una sesión abierta, tocarla lanza LazyInitializationException (por eso
+     * que se toca â€” y fuera de una sesiÃ³n abierta, tocarla lanza LazyInitializationException (por eso
      * la API responde con DTOs, nunca con la entidad).
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -1496,30 +1496,30 @@ public class Task implements Comparable<Task> {
     private Project project;
 
     /**
-     * Constructor NO-ARG protegido: EXCLUSIVO de JPA (rehidratación por reflexión). Nunca es un camino
-     * de creación de negocio. Su existencia es obligatoria para cualquier @Entity: sin él, al arrancar
+     * Constructor NO-ARG protegido: EXCLUSIVO de JPA (rehidrataciÃ³n por reflexiÃ³n). Nunca es un camino
+     * de creaciÃ³n de negocio. Su existencia es obligatoria para cualquier @Entity: sin Ã©l, al arrancar
      * Hibernate lanza "No default constructor for entity: com.taskflow.model.Task".
      */
     protected Task() {
-        // solo para JPA: rehidratación, nunca creación de negocio
+        // solo para JPA: rehidrataciÃ³n, nunca creaciÃ³n de negocio
     }
 
     /**
-     * Constructor de REHIDRATACIÓN: reconstruye una tarea que YA existía (semilla del DataSeeder,
-     * datos releídos). Valida las INVARIANTES que siempre deben cumplirse (título y proyecto), pero
-     * NO la regla temporal de dueDate: una tarea vencida es un dato válido que hay que poder releer.
+     * Constructor de REHIDRATACIÃ“N: reconstruye una tarea que YA existÃ­a (semilla del DataSeeder,
+     * datos releÃ­dos). Valida las INVARIANTES que siempre deben cumplirse (tÃ­tulo y proyecto), pero
+     * NO la regla temporal de dueDate: una tarea vencida es un dato vÃ¡lido que hay que poder releer.
      */
     public Task(Long id, String title, String description, TaskStatus status,
                 Priority priority, Long projectId, Long assigneeId, LocalDate dueDate)
             throws TaskValidationException {
-        // Invariante 1: título obligatorio, 3-120 chars.
+        // Invariante 1: tÃ­tulo obligatorio, 3-120 chars.
         if (title == null || title.isBlank()) {
-            throw new TaskValidationException("El título es obligatorio (no puede ir vacío).");
+            throw new TaskValidationException("El tÃ­tulo es obligatorio (no puede ir vacÃ­o).");
         }
         if (title.length() < TITULO_MIN || title.length() > TITULO_MAX) {
             throw new TaskValidationException(
-                    "El título debe tener entre " + TITULO_MIN + " y " + TITULO_MAX
-                            + " caracteres; recibí " + title.length() + ": \"" + title + "\".");
+                    "El tÃ­tulo debe tener entre " + TITULO_MIN + " y " + TITULO_MAX
+                            + " caracteres; recibÃ­ " + title.length() + ": \"" + title + "\".");
         }
         // Invariante 2: una tarea no puede existir sin proyecto (regla de negocio).
         if (projectId == null) {
@@ -1537,7 +1537,7 @@ public class Task implements Comparable<Task> {
     }
 
     /**
-     * Factory de CREACIÓN de negocio: añade la regla temporal (dueDate no en el pasado) y delega en
+     * Factory de CREACIÃ“N de negocio: aÃ±ade la regla temporal (dueDate no en el pasado) y delega en
      * el constructor. id nace null, status nace TODO. La usan el mapper y el servicio tal cual: que
      * Task sea @Entity no cambia esta firma.
      */
@@ -1546,14 +1546,14 @@ public class Task implements Comparable<Task> {
             throws TaskValidationException {
         if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
             throw new TaskValidationException(
-                    "La fecha límite no puede estar en el pasado: " + dueDate + ".");
+                    "La fecha lÃ­mite no puede estar en el pasado: " + dueDate + ".");
         }
         return new Task(null, title, description, TaskStatus.TODO, priority, projectId, assigneeId, dueDate);
     }
 
     // ---- Comportamiento: vive CON los datos ----
 
-    /** true si tiene fecha, ya pasó, y la tarea aún no está terminada. */
+    /** true si tiene fecha, ya pasÃ³, y la tarea aÃºn no estÃ¡ terminada. */
     public boolean estaVencida() {
         return dueDate != null && dueDate.isBefore(LocalDate.now()) && status != TaskStatus.DONE;
     }
@@ -1564,7 +1564,7 @@ public class Task implements Comparable<Task> {
         return id;
     }
 
-    /** Uso interno (JPA/repo) para el id autoincremental. Nadie más lo llama a mano. */
+    /** Uso interno (JPA/repo) para el id autoincremental. Nadie mÃ¡s lo llama a mano. */
     public void setId(Long id) {
         this.id = id;
     }
@@ -1598,7 +1598,7 @@ public class Task implements Comparable<Task> {
     }
 
     /**
-     * Navega al proyecto asociado (asociación de solo lectura). Fuera de una sesión JPA abierta puede
+     * Navega al proyecto asociado (asociaciÃ³n de solo lectura). Fuera de una sesiÃ³n JPA abierta puede
      * lanzar LazyInitializationException (por eso la API expone DTOs, no la entidad). En el runtime
      * nadie del camino principal lo usa; existe para NAVEGAR cuando haga falta.
      */
@@ -1610,7 +1610,7 @@ public class Task implements Comparable<Task> {
 
     /**
      * Cambia el estado aplicando la regla de negocio: no se puede pasar a DONE una tarea sin
-     * responsable (assigneeId). La regla vive AQUÍ, no en el servicio ni en el controller.
+     * responsable (assigneeId). La regla vive AQUÃ, no en el servicio ni en el controller.
      */
     public void setStatus(TaskStatus status) throws TaskValidationException {
         if (status == TaskStatus.DONE && assigneeId == null) {
@@ -1706,17 +1706,17 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 /**
- * Project — un proyecto dueño de tareas (entidad JPA).
+ * Project â€” un proyecto dueÃ±o de tareas (entidad JPA).
  *
- * El dueño se guarda como 'Long ownerId', no como un objeto User: forma (id, name, description,
- * ownerId, createdAt). "El repositorio/BD guarda ids": la referencia al dueño, en la BD, es una
+ * El dueÃ±o se guarda como 'Long ownerId', no como un objeto User: forma (id, name, description,
+ * ownerId, createdAt). "El repositorio/BD guarda ids": la referencia al dueÃ±o, en la BD, es una
  * columna Long.
  *
  * Como Task: @Entity + @Table(name = "projects"), @Id @GeneratedValue(IDENTITY), constructor no-arg
  * protegido para JPA. El id es 'Long' (envoltorio), no 'long' primitivo: un id nuevo es null hasta
- * que la BD lo asigna (sin valores mágicos como 0L para "aún sin id").
+ * que la BD lo asigna (sin valores mÃ¡gicos como 0L para "aÃºn sin id").
  *
- * ownerId NO lleva @ManyToOne (juicio, como assigneeId en Task): no navegamos al User dueño al
+ * ownerId NO lleva @ManyToOne (juicio, como assigneeId en Task): no navegamos al User dueÃ±o al
  * listar proyectos; con el id basta. Se mapea objeto cuando se NAVEGA, no cuando solo se REFERENCIA.
  */
 @Entity
@@ -1736,7 +1736,7 @@ public class Project {
 
     private LocalDate createdAt;
 
-    /** Constructor no-arg protegido: EXCLUSIVO de JPA (rehidratación por reflexión). */
+    /** Constructor no-arg protegido: EXCLUSIVO de JPA (rehidrataciÃ³n por reflexiÃ³n). */
     protected Project() {
         // solo para JPA
     }
@@ -2007,16 +2007,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * ProjectControllerTest — SLICE web. MISMO tratamiento que TaskControllerTest:
+ * ProjectControllerTest â€” SLICE web. MISMO tratamiento que TaskControllerTest:
  * @WebMvcTest + @MockitoBean del service + addFilters=false + @MockitoBean del filtro JWT.
  *
- * La seguridad (owner/ADMIN en el DELETE, 401/403) NO se prueba aquí: vive en integration/SecurityRulesTest
+ * La seguridad (owner/ADMIN en el DELETE, 401/403) NO se prueba aquÃ­: vive en integration/SecurityRulesTest
  * con token real. En el slice solo se verifica el CONTRATO web (200/201/400/404 + JSON).
  *
  * Nota del principal: createProject lee el username del Authentication; con
  * addFilters=false NO corre el filtro de seguridad que normalmente puebla request.getUserPrincipal(),
- * así que aquí se inyecta el principal directo en el request con .principal(...). (@WithMockUser sería
- * la alternativa cuando se quiere method security en el slice; aquí se elige addFilters=false y la
+ * asÃ­ que aquÃ­ se inyecta el principal directo en el request con .principal(...). (@WithMockUser serÃ­a
+ * la alternativa cuando se quiere method security en el slice; aquÃ­ se elige addFilters=false y la
  * seguridad se deja a integration/.)
  */
 @WebMvcTest(ProjectController.class)
@@ -2038,7 +2038,7 @@ class ProjectControllerTest {
     void getProjects_retorna200YLista() throws Exception {
         when(projectService.listar()).thenReturn(List.of(
                 new Project(1L, "Plataforma", "d", 1L, null),
-                new Project(2L, "App Móvil", "d", 2L, null),
+                new Project(2L, "App MÃ³vil", "d", 2L, null),
                 new Project(3L, "Legacy", "d", 1L, null)));
 
         mockMvc.perform(get("/projects"))
@@ -2110,7 +2110,7 @@ class ProjectControllerTest {
         try {
             return new Task(id, title, "desc", TaskStatus.TODO, Priority.MED, 1L, 1L, null);
         } catch (TaskValidationException e) {
-            throw new IllegalStateException("dato de prueba inválido", e);
+            throw new IllegalStateException("dato de prueba invÃ¡lido", e);
         }
     }
 }
@@ -2168,8 +2168,8 @@ public class ProjectControllerSummaryTest {
 
     @Test
     void getSummary_proyectoExistente_devuelve200yJSON() throws Exception {
-        Project p = new Project(2L, "App Móvil", "desc", 1L, LocalDate.now());
-        ProjectSummaryResponse dto = new ProjectSummaryResponse(2L, "App Móvil", 4, Map.of("TODO",1,"IN_PROGRESS",2,"DONE",1), 1);
+        Project p = new Project(2L, "App MÃ³vil", "desc", 1L, LocalDate.now());
+        ProjectSummaryResponse dto = new ProjectSummaryResponse(2L, "App MÃ³vil", 4, Map.of("TODO",1,"IN_PROGRESS",2,"DONE",1), 1);
 
         when(projectService.buscarPorId(2L)).thenReturn(Optional.of(p));
         when(projectService.resumen(p)).thenReturn(dto);
@@ -2177,7 +2177,7 @@ public class ProjectControllerSummaryTest {
         mockMvc.perform(get("/projects/2/summary"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.projectId").value(2))
-                .andExpect(jsonPath("$.projectName").value("App Móvil"))
+                .andExpect(jsonPath("$.projectName").value("App MÃ³vil"))
                 .andExpect(jsonPath("$.totalTasks").value(4))
                 .andExpect(jsonPath("$.byStatus.TODO").value(1))
                 .andExpect(jsonPath("$.byStatus.IN_PROGRESS").value(2))
@@ -2204,7 +2204,7 @@ public class ProjectControllerSummaryTest {
 
 ### Copilot
 
-Removiendo la importación incorrecta @MockitoBean del test slice y volviendo a ejecutar mvn -q test para verificar.
+Removiendo la importaciÃ³n incorrecta @MockitoBean del test slice y volviendo a ejecutar mvn -q test para verificar.
 
 ---
 
@@ -2480,7 +2480,7 @@ Editing the slice test to use the project's MockitoBean override and add a JwtAu
 
 <sub>2m 36s</sub>
 
-### `edit` — Failed
+### `edit` â€” Failed
 
 **edit the file at C:\Users\Lenovo\taskflow-copilot-danielrousse\src\test\java\com\taskflow\slice\ProjectControllerSummaryTest.java.**
 
@@ -2539,8 +2539,8 @@ public class ProjectControllerSummaryTest {
 
     @Test
     void getSummary_proyectoExistente_devuelve200yJSON() throws Exception {
-        Project p = new Project(2L, "App Móvil", "desc", 1L, LocalDate.now());
-        ProjectSummaryResponse dto = new ProjectSummaryResponse(2L, "App Móvil", 4, Map.of("TODO",1,"IN_PROGRESS",2,"DONE",1), 1);
+        Project p = new Project(2L, "App MÃ³vil", "desc", 1L, LocalDate.now());
+        ProjectSummaryResponse dto = new ProjectSummaryResponse(2L, "App MÃ³vil", 4, Map.of("TODO",1,"IN_PROGRESS",2,"DONE",1), 1);
 
         when(projectService.buscarPorId(2L)).thenReturn(Optional.of(p));
         when(projectService.resumen(p)).thenReturn(dto);
@@ -2548,7 +2548,7 @@ public class ProjectControllerSummaryTest {
         mockMvc.perform(get("/projects/2/summary"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.projectId").value(2))
-                .andExpect(jsonPath("$.projectName").value("App Móvil"))
+                .andExpect(jsonPath("$.projectName").value("App MÃ³vil"))
                 .andExpect(jsonPath("$.totalTasks").value(4))
                 .andExpect(jsonPath("$.byStatus.TODO").value(1))
                 .andExpect(jsonPath("$.byStatus.IN_PROGRESS").value(2))
@@ -2575,7 +2575,7 @@ public class ProjectControllerSummaryTest {
 
 ### Copilot
 
-Añadiendo un MockBean para JwtAuthenticationFilter (como hacen otros slice tests) para evitar que Spring intente instanciar el filtro real que requiere JwtService. Ejecutando mvn -q test después de la corrección.
+AÃ±adiendo un MockBean para JwtAuthenticationFilter (como hacen otros slice tests) para evitar que Spring intente instanciar el filtro real que requiere JwtService. Ejecutando mvn -q test despuÃ©s de la correcciÃ³n.
 
 ---
 
@@ -2790,7 +2790,7 @@ This generated password is for development use only. Your security configuration
 
 <sub>3m 31s</sub>
 
-### `view` — Failed
+### `view` â€” Failed
 
 **view the file at C:\Users\Lenovo\AppData\Local\Temp\1792175621106-copilot-tool-output-15312-a897b3f0-890e-4dae-9b03-74ef09e6d746.txt.**
 
@@ -2832,7 +2832,7 @@ Hibernate: select t1_0.id,t1_0.assignee_id,t1_0.description,t1_0.due_date,t1_0.p
 Hibernate: select t1_0.id,t1_0.assignee_id,t1_0.description,t1_0.due_date,t1_0.priority,t1_0.project_id,t1_0.status,t1_0.title from tasks t1_0 where t1_0.id=?
 [ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.570 s <<< FAILURE! -- in com.taskflow.unit.ProjectServiceSummaryTest
 [ERROR] com.taskflow.unit.ProjectServiceSummaryTest.resumen_calculado_correctamente -- Time elapsed: 0.011 s <<< ERROR!
-com.taskflow.exception.TaskValidationException: El t�tulo debe tener entre 3 y 120 caracteres; recib� 2: "T1".
+com.taskflow.exception.TaskValidationException: El tï¿½tulo debe tener entre 3 y 120 caracteres; recibï¿½ 2: "T1".
 	at com.taskflow.model.Task.<init>(Task.java:117)
 	at com.taskflow.unit.ProjectServiceSummaryTest.resumen_calculado_correctamente(ProjectServiceSummaryTest.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -2840,7 +2840,7 @@ com.taskflow.exception.TaskValidationException: El t�tulo debe tener entre 3 y
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
 [ERROR] Errors: 
-[ERROR]   ProjectServiceSummaryTest.resumen_calculado_correctamente:43 � TaskValidation El t�tulo debe tener entre 3 y 120 caracteres; recib� 2: "T1".
+[ERROR]   ProjectServiceSummaryTest.resumen_calculado_correctamente:43 ï¿½ TaskValidation El tï¿½tulo debe tener entre 3 y 120 caracteres; recibï¿½ 2: "T1".
 [ERROR] Tests run: 76, Failures: 0, Errors: 1, Skipped: 0
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.3:test (default-test) on project taskflow-api: 
 [ERROR] 
@@ -2913,7 +2913,7 @@ public class ProjectServiceSummaryTest {
 
     @Test
     void resumen_calculado_correctamente() throws Exception {
-        Project p = new Project(2L, "App Móvil", "desc", 1L, LocalDate.now());
+        Project p = new Project(2L, "App MÃ³vil", "desc", 1L, LocalDate.now());
         Task t1 = new Task(1L, "T1", "d", TaskStatus.TODO, Priority.MED, 2L, null, null);
         Task t2 = new Task(2L, "T2", "d", TaskStatus.DONE, Priority.MED, 2L, 1L, LocalDate.now().minusDays(5)); // pasada pero DONE -> no cuenta
         Task t3 = new Task(3L, "T3", "d", TaskStatus.IN_PROGRESS, Priority.MED, 2L, 1L, null);
@@ -2924,7 +2924,7 @@ public class ProjectServiceSummaryTest {
         var resumen = projectService.resumen(p);
 
         assertEquals(2L, resumen.projectId());
-        assertEquals("App Móvil", resumen.projectName());
+        assertEquals("App MÃ³vil", resumen.projectName());
         assertEquals(4, resumen.totalTasks());
         assertEquals(1, resumen.byStatus().get("TODO").intValue());
         assertEquals(2, resumen.byStatus().get("IN_PROGRESS").intValue());
@@ -3160,7 +3160,7 @@ This generated password is for development use only. Your security configuration
 
 ### Copilot
 
-mvn -q test completed successfully (exit code 0). Changes implemented and tests pass. List of files created/modified below.He implementado GET /projects/{id}/summary según specs/summary.md, añadí DTO, mapper, servicio, controller y tests, y ejecuté mvn -q test: todo pasó.
+mvn -q test completed successfully (exit code 0). Changes implemented and tests pass. List of files created/modified below.He implementado GET /projects/{id}/summary segÃºn specs/summary.md, aÃ±adÃ­ DTO, mapper, servicio, controller y tests, y ejecutÃ© mvn -q test: todo pasÃ³.
 
 Archivos creados:
 - src/main/java/com/taskflow/dto/ProjectSummaryResponse.java
@@ -3172,7 +3172,7 @@ Archivos modificados:
 - src/main/java/com/taskflow/service/ProjectService.java
 - src/main/java/com/taskflow/controller/ProjectController.java
 
-Resultado de mvn -q test: Éxito (todas las pruebas pasaron).
+Resultado de mvn -q test: Ã‰xito (todas las pruebas pasaron).
 
 ---
 

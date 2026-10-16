@@ -60,4 +60,22 @@ public class ProjectControllerSummaryTest {
         mockMvc.perform(get("/projects/99/summary"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void getSummary_proyectoSinTareas_devuelve200YCeros() throws Exception {
+        Project p = new Project(3L, "Empty", "desc", 1L, LocalDate.now());
+        ProjectSummaryResponse dto = new ProjectSummaryResponse(3L, "Empty", 0, Map.of("TODO",0,"IN_PROGRESS",0,"DONE",0), 0);
+
+        when(projectService.buscarPorId(3L)).thenReturn(Optional.of(p));
+        when(projectService.resumen(p)).thenReturn(dto);
+
+        mockMvc.perform(get("/projects/3/summary"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.projectId").value(3))
+                .andExpect(jsonPath("$.totalTasks").value(0))
+                .andExpect(jsonPath("$.byStatus.TODO").value(0))
+                .andExpect(jsonPath("$.byStatus.IN_PROGRESS").value(0))
+                .andExpect(jsonPath("$.byStatus.DONE").value(0))
+                .andExpect(jsonPath("$.overdue").value(0));
+    }
 }
