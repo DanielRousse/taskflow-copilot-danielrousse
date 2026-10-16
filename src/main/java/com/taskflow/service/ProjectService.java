@@ -99,4 +99,28 @@ public class ProjectService {
         tareasDe(id).forEach(t -> taskRepository.deleteById(t.getId()));   // cascada manual (la FK obliga el orden)
         projectRepository.deleteById(id);
     }
+
+    /**
+     * Calcula el resumen de un proyecto: totales por estado, total de tareas y vencidas.
+     * Recibe la entidad Project ya validada por el controller.
+     */
+    public com.taskflow.dto.ProjectSummaryResponse resumen(Project project) {
+        Long projectId = project.getId();
+        java.util.List<com.taskflow.model.Task> tareas = taskRepository.findByProjectId(projectId);
+
+        int totalTasks = tareas.size();
+
+        java.util.Map<com.taskflow.model.TaskStatus, Integer> byStatus = new java.util.EnumMap<>(com.taskflow.model.TaskStatus.class);
+        // Inicializar a cero
+        for (com.taskflow.model.TaskStatus s : com.taskflow.model.TaskStatus.values()) {
+            byStatus.put(s, 0);
+        }
+        for (com.taskflow.model.Task t : tareas) {
+            byStatus.put(t.getStatus(), byStatus.getOrDefault(t.getStatus(), 0) + 1);
+        }
+
+        int overdue = (int) tareas.stream().filter(com.taskflow.model.Task::estaVencida).count();
+
+        return com.taskflow.mapper.ProjectMapper.aSummary(project, byStatus, totalTasks, overdue);
+    }
 }
