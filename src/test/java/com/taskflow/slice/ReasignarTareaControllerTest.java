@@ -1,6 +1,7 @@
 package com.taskflow.slice;
 
 import com.taskflow.controller.TaskController;
+import com.taskflow.exception.TaskStateException;
 import com.taskflow.model.Priority;
 import com.taskflow.model.Task;
 import com.taskflow.model.TaskStatus;
@@ -55,7 +56,7 @@ class ReasignarTareaControllerTest {
     @Test
     void patchAssignee_tareaDone_devuelve422() throws Exception {
         when(taskService.buscarPorId(2L)).thenReturn(Optional.of(new Task(2L, "Tarea 2", "d", TaskStatus.DONE, Priority.HIGH, 1L, 1L, null)));
-        when(taskService.reasignar(any(Task.class), anyLong())).thenThrow(new com.taskflow.exception.TaskStateException("No se puede reasignar una tarea terminada."));
+        when(taskService.reasignar(any(Task.class), anyLong())).thenThrow(new TaskStateException("No se puede reasignar una tarea terminada."));
 
         mockMvc.perform(patch("/tasks/2/assignee")
                         .contentType(MediaType.APPLICATION_JSON)
